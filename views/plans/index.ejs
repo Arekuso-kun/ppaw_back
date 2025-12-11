@@ -1,0 +1,32 @@
+<%- include('../partials/header', {title: "Available plans"}) %>
+
+<a href="/plans/create/new" class="btn btn-success mb-3">Add new plan</a>
+<h1 class="mb-4 text-primary">Available plans</h1>
+
+<table class="table table-hover table-bordered shadow-sm">
+  <thead class="table-primary">
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Max conversions per day</th>
+      <th>Max file size (MB)</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% plans.forEach(plan => { %>
+    <tr>
+      <td><%= plan.planid %></td>
+      <td><%= plan.planname %></td>
+      <td><%= plan.maxconversionsperday %></td>
+      <td><%= plan.maxfilesize %></td>
+      <td>
+        <a href="/plans/<%= plan.planid %>" class="btn btn-sm btn-outline-primary">Details</a>
+        <a href="/plans/edit/<%= plan.planid %>" class="btn btn-sm btn-outline-warning">Edit</a>
+      </td>
+    </tr>
+    <% }) %>
+  </tbody>
+</table>
+
+<%- include('../partials/footer') %>

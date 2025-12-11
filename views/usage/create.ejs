@@ -1,0 +1,62 @@
+<%- include('../partials/header', {title: "Log new usage"}) %>
+
+<div class="container-sm" style="max-width: 600px">
+  <h1 class="mb-4 text-primary">Log new usage</h1>
+  <form action="/usage/create/new" method="POST" class="card p-4 shadow-sm">
+    <div class="mb-3">
+      <label class="form-label">User</label>
+      <select name="userid" class="form-select" required>
+        <option value="" disabled selected>Select a user...</option>
+        <% users.forEach(user => { %>
+        <option value="<%= user.userid %>"><%= user.name %> (<%= user.email %>)</option>
+        <% }) %>
+      </select>
+    </div>
+
+    <% const imageTypes = ["JPG", "PNG", "GIF", "WEBP", "BMP", "TIFF"]; %>
+
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <label class="form-label">Convert From</label>
+        <select name="conversionFrom" class="form-select" required>
+          <option value="" disabled selected>From...</option>
+          <% imageTypes.forEach(type => { %>
+          <option value="<%= type %>"><%= type %></option>
+          <% }) %>
+        </select>
+      </div>
+      <div class="col-md-6 mb-3">
+        <label class="form-label">Convert To</label>
+        <select name="conversionTo" class="form-select" required>
+          <option value="" disabled selected>To...</option>
+          <% imageTypes.forEach(type => { %>
+          <option value="<%= type %>"><%= type %></option>
+          <% }) %>
+        </select>
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Status</label>
+      <select name="status" class="form-select" required>
+        <option value="" disabled selected>Select status...</option>
+        <option value="success">Success</option>
+        <option value="failed">Failed</option>
+        <option value="pending">Pending</option>
+        <option value="error">Error</option>
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">File size (KB)</label>
+      <input type="number" name="filesize" class="form-control" required />
+    </div>
+
+    <div class="d-flex gap-2">
+      <button type="submit" class="btn btn-success">Log entry</button>
+      <a href="/usage" class="btn btn-outline-secondary">Cancel</a>
+    </div>
+  </form>
+</div>
+
+<%- include('../partials/footer') %>

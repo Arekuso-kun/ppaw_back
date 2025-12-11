@@ -1,0 +1,38 @@
+<%- include('../partials/header', {title: "Create user"}) %>
+
+<div class="container-sm" style="max-width: 600px">
+  <h1 class="mb-4 text-primary">Add new user</h1>
+  <form action="/users/create/new" method="POST" class="card p-4 shadow-sm">
+    <div class="mb-3">
+      <label class="form-label">Name</label>
+      <input type="text" name="name" class="form-control" required />
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Email</label>
+      <input type="email" name="email" class="form-control" required />
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Password</label>
+      <input type="password" name="password" class="form-control" required />
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Plan</label>
+      <select name="planid" class="form-select" required>
+        <option value="" disabled selected>Select a plan...</option>
+        <% plans.forEach(plan => { %>
+        <option value="<%= plan.planid %>"><%= plan.planname %></option>
+        <% }) %>
+      </select>
+    </div>
+
+    <div class="d-flex gap-2">
+      <button type="submit" class="btn btn-success">Save</button>
+      <a href="/users" class="btn btn-outline-secondary">Cancel</a>
+    </div>
+  </form>
+</div>
+
+<%- include('../partials/footer') %>

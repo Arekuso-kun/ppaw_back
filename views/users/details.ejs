@@ -1,0 +1,30 @@
+<%- include('../partials/header', {title: "User details"}) %>
+
+<div class="card shadow-sm">
+  <div class="card-body">
+    <h3 class="card-title text-primary mb-4"><%= user.name %></h3>
+
+    <ul class="list-group mb-3">
+      <li class="list-group-item"><strong>ID:</strong> <%= user.userid %></li>
+      <li class="list-group-item"><strong>Email:</strong> <%= user.email %></li>
+      <li class="list-group-item"><strong>Plan:</strong> <%= user.plans ? user.plans.planname : 'N/A' %></li>
+    </ul>
+
+    <h5 class="mt-4">Usage logs (<%= user.usage.length %>)</h5>
+    <% if (user.usage.length > 0) { %>
+    <ul class="list-group">
+      <% user.usage.forEach(log => { %>
+      <li class="list-group-item">
+        <%= log.date.toDateString() %>: <%= log.conversiontype %> (<%= log.status %>) - <%= log.filesize %> KB
+      </li>
+      <% }) %>
+    </ul>
+    <% } else { %>
+    <p>No usage logs found for this user.</p>
+    <% } %>
+
+    <a href="/users" class="btn btn-outline-secondary mt-4">Back to users</a>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>

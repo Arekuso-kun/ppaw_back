@@ -1,0 +1,39 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model plans {
+  planid               Int     @id @default(autoincrement())
+  planname             String  @db.VarChar(100)
+  maxconversionsperday Int
+  maxfilesize          Int
+  price                Decimal @default(0.00) @db.Decimal(10, 2)
+  users                users[]
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model usage {
+  usageid        Int      @id @default(autoincrement())
+  userid         Int?
+  date           DateTime @default(now()) @db.Timestamp(6)
+  conversiontype String   @db.VarChar(50)
+  status         String?  @db.VarChar(20)
+  filesize       Int
+  users          users?   @relation(fields: [userid], references: [userid], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model users {
+  userid   Int     @id @default(autoincrement())
+  planid   Int?
+  name     String  @db.VarChar(100)
+  email    String  @unique @db.VarChar(100)
+  password String  @db.VarChar(255)
+  deleted  Boolean @default(false)
+  usage    usage[]
+  plans    plans?  @relation(fields: [planid], references: [planid], onDelete: NoAction, onUpdate: NoAction)
+}

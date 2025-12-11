@@ -1,0 +1,17 @@
+<%- include('../partials/header', {title: "Plan details"}) %>
+
+<div class="card shadow-sm">
+  <div class="card-body">
+    <h3 class="card-title text-primary mb-4"><%= plan.planname %></h3>
+
+    <ul class="list-group mb-3">
+      <li class="list-group-item"><strong>ID:</strong> <%= plan.planid %></li>
+      <li class="list-group-item"><strong>Max conversions per day:</strong> <%= plan.maxconversionsperday %></li>
+      <li class="list-group-item"><strong>Max file size (MB):</strong> <%= plan.maxfilesize %></li>
+    </ul>
+
+    <a href="/plans" class="btn btn-outline-secondary">Back to plans</a>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>

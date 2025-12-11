@@ -1,0 +1,28 @@
+<%- include('../partials/header', {title: "Add new plan"}) %>
+
+<div class="container-sm" style="max-width: 600px">
+  <h1 class="mb-4 text-primary">Add new plan</h1>
+  <form action="/plans/create/new" method="POST" class="card p-4 shadow-sm">
+    <div class="mb-3">
+      <label class="form-label">Plan name</label>
+      <input type="text" name="planname" class="form-control" required />
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Max conversions per day</label>
+      <input type="number" name="maxconversionsperday" class="form-control" required />
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Max file size (MB)</label>
+      <input type="number" name="maxfilesize" class="form-control" required />
+    </div>
+
+    <div class="d-flex gap-2">
+      <button type="submit" class="btn btn-success">Save</button>
+      <a href="/plans" class="btn btn-outline-secondary">Cancel</a>
+    </div>
+  </form>
+</div>
+
+<%- include('../partials/footer') %>
