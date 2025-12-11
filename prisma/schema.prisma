@@ -29,7 +29,7 @@ model usage {
 
 model users {
   userid   Int     @id @default(autoincrement())
-  planid   Int?
+  planid   Int?    @default(1)
   name     String  @db.VarChar(100)
   email    String  @unique @db.VarChar(100)
   password String  @db.VarChar(255)

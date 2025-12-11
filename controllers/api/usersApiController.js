@@ -61,12 +61,13 @@ export class UsersApiController {
     try {
       const { name, email, password, planid } = req.body;
 
-      const newUser = await UsersAccessor.createUser({
-        name,
-        email,
-        password,
-        planid: Number(planid),
-      });
+      const userData = { name, email, password };
+
+      if (planid !== undefined) {
+        userData.planid = Number(planid);
+      }
+
+      const newUser = await UsersAccessor.createUser(userData);
 
       res.status(201).json(newUser);
     } catch (error) {
