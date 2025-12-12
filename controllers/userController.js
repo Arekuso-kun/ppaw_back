@@ -80,4 +80,15 @@ export class UserController {
       res.status(500).send("Error saving changes");
     }
   };
+
+  deletePost = async (req, res) => {
+    try {
+      const id = Number(req.params.id);
+      await this.userAccessor.deleteUser(id);
+      res.redirect("/users");
+    } catch (error) {
+      console.error("Error deleting user:", error);
+      res.status(500).send("Error deleting user");
+    }
+  };
 }

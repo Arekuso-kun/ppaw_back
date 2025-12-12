@@ -9,5 +9,6 @@ router.get("/create/new", userController.createGet);
 router.post("/create/new", userController.createPost);
 router.get("/edit/:id", userController.editGet);
 router.post("/edit/:id", userController.editPost);
+router.post("/delete/:id", userController.deletePost);
 
 export default router;

@@ -9,5 +9,6 @@ router.get("/create/new", planController.createGet);
 router.post("/create/new", planController.createPost);
 router.get("/edit/:id", planController.editGet);
 router.post("/edit/:id", planController.editPost);
+router.post("/delete/:id", planController.deletePost);
 
 export default router;

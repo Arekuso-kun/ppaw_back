@@ -71,4 +71,15 @@ export class PlanController {
       res.status(500).send("Error saving changes");
     }
   };
+
+  deletePost = async (req, res) => {
+    try {
+      const id = Number(req.params.id);
+      await this.planAccessor.deletePlan(id);
+      res.redirect("/plans");
+    } catch (error) {
+      console.error("Error deleting plan:", error);
+      res.status(500).send("Error deleting plan");
+    }
+  };
 }

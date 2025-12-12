@@ -12,7 +12,7 @@ async function main() {
     data: {
       planname: "Free",
       maxconversionsperday: 5,
-      maxfilesize: 1,
+      maxfilesize: 1, // MB
     },
   });
 
@@ -58,21 +58,21 @@ async function main() {
         date: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000), // acum 2 zile
         conversiontype: "PDF_TO_BMP",
         status: "success",
-        filesize: 1, // MB
+        filesize: 19571, // bytes
       },
       {
         userid: user1.userid,
         date: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000), // acum 1 zi
         conversiontype: "PNG_TO_JPG",
         status: "failed",
-        filesize: 1,
+        filesize: 584182,
       },
       {
         userid: user2.userid,
         date: new Date(Date.now() - 3 * 60 * 60 * 1000), // acum 3 ore
         conversiontype: "JPG_TO_PNG",
         status: "success",
-        filesize: 2,
+        filesize: 22340,
       },
     ],
   });
