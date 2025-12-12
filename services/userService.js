@@ -1,46 +1,51 @@
+import { ApiError } from "../utils/ApiError.js";
+
 export class UserService {
   constructor(userAccessor, usageAccessor) {
     this.userAccessor = userAccessor;
     this.usageAccessor = usageAccessor;
   }
 
-  getAllUsers() {
+  getAllUsers = async () => {
     return this.userAccessor.getAllUsers();
-  }
+  };
 
-  getAllUsersDetailed() {
+  getAllUsersDetailed = async () => {
     return this.userAccessor.getAllUsersDetailed();
-  }
+  };
 
-  getUserById(id) {
-    return this.userAccessor.getUserById(id);
-  }
+  getUserById = async (id) => {
+    const user = await this.userAccessor.getUserById(id);
+    if (!user) throw new ApiError("Utilizatorul nu a fost găsit", 404);
+    return user;
+  };
 
-  getUserByEmail(email) {
+  getUserByEmail = async (email) => {
     return this.userAccessor.getUserByEmail(email);
-  }
+  };
 
-  createUser(userData) {
+  createUser = async (userData) => {
     return this.userAccessor.createUser(userData);
-  }
+  };
 
-  updateUser(id, userData) {
+  updateUser = async (id, userData) => {
     return this.userAccessor.updateUser(id, userData);
-  }
+  };
 
-  deleteUser(id) {
+  deleteUser = async (id) => {
     return this.userAccessor.deleteUser(id);
-  }
+  };
 
-  async login(email, password) {
+  login = async (email, password) => {
     const user = await this.getUserByEmail(email);
-    if (!user || user.password !== password) return null;
-
+    if (!user || user.password !== password) {
+      throw new ApiError("Email sau parolă incorectă", 401);
+    }
     const { password: _, ...userWithoutPassword } = user;
     return userWithoutPassword;
-  }
+  };
 
-  async getDailyUsageCount(userId) {
+  getDailyUsageCount = async (userId) => {
     const startOfDay = new Date();
     startOfDay.setUTCHours(0, 0, 0, 0);
 
@@ -52,12 +57,11 @@ export class UserService {
       dateRange: { gte: startOfDay, lte: endOfDay },
       status: "success",
     });
-  }
+  };
 
-  async getUserConversionInfo(userId) {
-    const user = await this.userAccessor.getUserById(userId);
-    if (!user) throw new Error("User not found");
-    if (!user.plans) throw new Error("User plan not found");
+  getUserConversionInfo = async (userId) => {
+    const user = await this.getUserById(userId);
+    if (!user.plans) throw new ApiError("Planul utilizatorului nu a fost găsit", 404);
 
     const dailyUsage = await this.getDailyUsageCount(userId);
 
@@ -67,11 +71,10 @@ export class UserService {
       maxConversions: user.plans.maxconversionsperday,
       maxFileSize: user.plans.maxfilesize,
     };
-  }
+  };
 
-  async canConvert(userId, fileSizeBytes) {
+  canConvert = async (userId, fileSizeBytes) => {
     const info = await this.getUserConversionInfo(userId);
-
     const maxFileSizeBytes = info.maxFileSize * 1024 * 1024;
 
     return {
@@ -80,5 +83,5 @@ export class UserService {
       maxFileSizeBytes,
       fileTooLarge: fileSizeBytes > maxFileSizeBytes,
     };
-  }
+  };
 }

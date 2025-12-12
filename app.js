@@ -11,6 +11,8 @@ import planApiRoutes from "./routes/api/planRoutes.js";
 import userApiRoutes from "./routes/api/userRoutes.js";
 import usageApiRoutes from "./routes/api/usageRoutes.js";
 
+import { errorHandler } from "./middleware/errorHandler.js";
+
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -37,6 +39,8 @@ app.use("/usage", usageRoutes);
 app.use("/api/v1/plans", planApiRoutes);
 app.use("/api/v1/users", userApiRoutes);
 app.use("/api/v1/usage", usageApiRoutes);
+
+app.use(errorHandler);
 
 app.listen(3000, () => {
   console.log("Server running on http://localhost:3000");

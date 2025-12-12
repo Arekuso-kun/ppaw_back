@@ -1,38 +1,53 @@
+import { ApiError } from "../utils/ApiError.js";
+
 export class PlanService {
   constructor(planAccessor) {
     this.planAccessor = planAccessor;
   }
 
-  getAllPlans() {
-    return this.planAccessor.getAllPlans();
-  }
+  getAllPlans = async () => {
+    try {
+      return await this.planAccessor.getAllPlans();
+    } catch (err) {
+      throw new ApiError("Eroare la încărcarea planurilor");
+    }
+  };
 
-  getAllPlansWithUsers() {
-    return this.planAccessor.getAllPlansWithUsers();
-  }
+  getAllPlansWithUsers = async () => {
+    try {
+      return await this.planAccessor.getAllPlansWithUsers();
+    } catch (err) {
+      throw new ApiError("Eroare la încărcarea planurilor cu utilizatori");
+    }
+  };
 
-  getPlanById(planId) {
-    return this.planAccessor.getPlanById(planId);
-  }
+  getPlanById = async (planId) => {
+    const plan = await this.planAccessor.getPlanById(planId);
+    if (!plan) throw new ApiError("Planul nu a fost găsit", 404);
+    return plan;
+  };
 
-  createPlan(planData) {
-    // Ensure numeric values
+  createPlan = async (planData) => {
     return this.planAccessor.createPlan({
       ...planData,
       maxconversionsperday: Number(planData.maxconversionsperday),
       maxfilesize: Number(planData.maxfilesize),
     });
-  }
+  };
 
-  updatePlan(planId, planData) {
+  updatePlan = async (planId, planData) => {
     return this.planAccessor.updatePlan(planId, {
       ...planData,
       maxconversionsperday: Number(planData.maxconversionsperday),
       maxfilesize: Number(planData.maxfilesize),
     });
-  }
+  };
 
-  deletePlan(planId) {
-    return this.planAccessor.deletePlan(planId);
-  }
+  deletePlan = async (planId) => {
+    try {
+      await this.planAccessor.deletePlan(planId);
+    } catch {
+      throw new ApiError("Nu se poate șterge planul. Poate fi folosit de utilizatori.", 400);
+    }
+  };
 }
