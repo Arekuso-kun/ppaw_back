@@ -1,10 +1,10 @@
 import express from "express";
-import { UsageController } from "../controllers/usageController.js";
+import { usageController } from "../di/index.js";
 
 const router = express.Router();
 
-router.get("/", UsageController.index);
-router.get("/create/new", UsageController.createGet);
-router.post("/create/new", UsageController.createPost);
+router.get("/", usageController.index);
+router.get("/create/new", usageController.createGet);
+router.post("/create/new", usageController.createPost);
 
 export default router;

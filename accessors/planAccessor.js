@@ -1,15 +1,18 @@
-export class PlansAccessor {
+export class PlanAccessor {
   constructor(prisma) {
     this.prisma = prisma;
   }
 
   async getAllPlans() {
-    return await this.prisma.plans.findMany();
+    return await this.prisma.plans.findMany({
+      orderBy: { planid: "asc" },
+    });
   }
 
   async getAllPlansWithUsers() {
     return await this.prisma.plans.findMany({
       include: { users: true },
+      orderBy: { planid: "asc" },
     });
   }
 

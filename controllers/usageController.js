@@ -1,34 +1,36 @@
-import { UsageAccessor } from "../accessors/UsageAccessor.js";
-import { UsersAccessor } from "../accessors/UsersAccessor.js";
-
 export class UsageController {
-  static async index(req, res) {
+  constructor(usageAccessor, userAccessor) {
+    this.usageAccessor = usageAccessor;
+    this.userAccessor = userAccessor;
+  }
+
+  index = async (req, res) => {
     try {
-      const usages = await UsageAccessor.getAllUsageDetailed();
+      const usages = await this.usageAccessor.getAllUsageDetailed();
       res.render("usage/index", { usages });
     } catch (error) {
       console.error("Error fetching usage data:", error);
       res.status(500).send("Error loading usage data");
     }
-  }
+  };
 
-  static async createGet(req, res) {
+  createGet = async (req, res) => {
     try {
-      const users = await UsersAccessor.getAllUsers();
+      const users = await this.userAccessor.getAllUsers();
       res.render("usage/create", { users });
     } catch (error) {
       console.error("Error loading create usage form:", error);
       res.status(500).send("Error loading create form");
     }
-  }
+  };
 
-  static async createPost(req, res) {
+  createPost = async (req, res) => {
     try {
       const { userid, conversionFrom, conversionTo, status, filesize } = req.body;
 
       const combinedConversionType = `${conversionFrom}_TO_${conversionTo}`;
 
-      await UsageAccessor.createUsage({
+      await this.usageAccessor.createUsage({
         userid: Number(userid),
         conversiontype: combinedConversionType,
         status,
@@ -40,5 +42,5 @@ export class UsageController {
       console.error("Error logging usage:", error);
       res.status(500).send("Error saving usage log");
     }
-  }
+  };
 }

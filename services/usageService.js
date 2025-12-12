@@ -1,7 +1,7 @@
 export class UsageService {
-  constructor(usageAccessor, usersService) {
+  constructor(usageAccessor, userService) {
     this.usageAccessor = usageAccessor;
-    this.usersService = usersService;
+    this.userService = userService;
   }
 
   getAllUsage() {
@@ -34,7 +34,7 @@ export class UsageService {
   }
 
   async createUsage(userId, conversionType, fileSize) {
-    const check = await this.usersService.canConvert(userId, fileSize);
+    const check = await this.userService.canConvert(userId, fileSize);
 
     if (!check.canConvert) {
       let message = "Ai atins limita zilnică de conversii.";

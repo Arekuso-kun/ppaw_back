@@ -9,4 +9,5 @@ router.get("/:id", usageApiController.getById);
 router.post("/", usageApiController.create);
 router.put("/:id", usageApiController.update);
 router.delete("/:id", usageApiController.delete);
+
 export default router;

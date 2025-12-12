@@ -1,43 +1,45 @@
-import { UsersAccessor } from "../accessors/UsersAccessor.js";
-import { PlansAccessor } from "../accessors/PlansAccessor.js";
+export class UserController {
+  constructor(userAccessor, planAccessor) {
+    this.userAccessor = userAccessor;
+    this.planAccessor = planAccessor;
+  }
 
-export class UsersController {
-  static async index(req, res) {
+  index = async (req, res) => {
     try {
-      const users = await UsersAccessor.getAllUsersDetailed();
+      const users = await this.userAccessor.getAllUsersDetailed();
       res.render("users/index", { users });
     } catch (error) {
       console.error("Error fetching users:", error);
       res.status(500).send("Error loading users");
     }
-  }
+  };
 
-  static async details(req, res) {
+  details = async (req, res) => {
     try {
       const id = Number(req.params.id);
-      const user = await UsersAccessor.getUserById(id);
+      const user = await this.userAccessor.getUserById(id);
       if (!user) return res.status(404).send("User not found");
       res.render("users/details", { user });
     } catch (error) {
       console.error("Error fetching user details:", error);
       res.status(500).send("Error loading user details");
     }
-  }
+  };
 
-  static async createGet(req, res) {
+  createGet = async (req, res) => {
     try {
-      const plans = await PlansAccessor.getAllPlans();
+      const plans = await this.planAccessor.getAllPlans();
       res.render("users/create", { plans });
     } catch (error) {
       console.error("Error loading create user form:", error);
       res.status(500).send("Error loading create form");
     }
-  }
+  };
 
-  static async createPost(req, res) {
+  createPost = async (req, res) => {
     try {
       const { name, email, password, planid } = req.body;
-      await UsersAccessor.createUser({
+      await this.userAccessor.createUser({
         name,
         email,
         password,
@@ -48,26 +50,26 @@ export class UsersController {
       console.error("Error creating user:", error);
       res.status(500).send("Error saving user");
     }
-  }
+  };
 
-  static async editGet(req, res) {
+  editGet = async (req, res) => {
     try {
       const id = Number(req.params.id);
-      const user = await UsersAccessor.getUserById(id);
-      const plans = await PlansAccessor.getAllPlans();
+      const user = await this.userAccessor.getUserById(id);
+      const plans = await this.planAccessor.getAllPlans();
       if (!user) return res.status(404).send("User not found");
       res.render("users/edit", { user, plans });
     } catch (error) {
       console.error("Error loading user for edit:", error);
       res.status(500).send("Error loading edit form");
     }
-  }
+  };
 
-  static async editPost(req, res) {
+  editPost = async (req, res) => {
     try {
       const id = Number(req.params.id);
       const { name, email, planid } = req.body;
-      await UsersAccessor.updateUser(id, {
+      await this.userAccessor.updateUser(id, {
         name,
         email,
         planid: Number(planid),
@@ -77,5 +79,5 @@ export class UsersController {
       console.error("Error updating user:", error);
       res.status(500).send("Error saving changes");
     }
-  }
+  };
 }

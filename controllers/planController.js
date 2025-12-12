@@ -1,36 +1,38 @@
-import { PlansAccessor } from "../accessors/PlansAccessor.js";
+export class PlanController {
+  constructor(planAccessor) {
+    this.planAccessor = planAccessor;
+  }
 
-export class PlansController {
-  static async index(req, res) {
+  index = async (req, res) => {
     try {
-      const plans = await PlansAccessor.getAllPlans();
+      const plans = await this.planAccessor.getAllPlans();
       res.render("plans/index", { plans });
     } catch (error) {
       console.error("Error fetching plans:", error);
       res.status(500).send("Error loading plans");
     }
-  }
+  };
 
-  static async details(req, res) {
+  details = async (req, res) => {
     try {
       const id = Number(req.params.id);
-      const plan = await PlansAccessor.getPlanById(id);
+      const plan = await this.planAccessor.getPlanById(id);
       if (!plan) return res.status(404).send("Plan not found");
       res.render("plans/details", { plan });
     } catch (error) {
       console.error("Error fetching plan details:", error);
       res.status(500).send("Error loading plan details");
     }
-  }
+  };
 
-  static async createGet(req, res) {
+  createGet = (req, res) => {
     res.render("plans/create");
-  }
+  };
 
-  static async createPost(req, res) {
+  createPost = async (req, res) => {
     try {
       const { planname, maxconversionsperday, maxfilesize } = req.body;
-      await PlansAccessor.createPlan({
+      await this.planAccessor.createPlan({
         planname,
         maxconversionsperday: Number(maxconversionsperday),
         maxfilesize: Number(maxfilesize),
@@ -40,25 +42,25 @@ export class PlansController {
       console.error("Error creating plan:", error);
       res.status(500).send("Error saving plan");
     }
-  }
+  };
 
-  static async editGet(req, res) {
+  editGet = async (req, res) => {
     try {
       const id = Number(req.params.id);
-      const plan = await PlansAccessor.getPlanById(id);
+      const plan = await this.planAccessor.getPlanById(id);
       if (!plan) return res.status(404).send("Plan not found");
       res.render("plans/edit", { plan });
     } catch (error) {
       console.error("Error loading plan for edit:", error);
       res.status(500).send("Error loading edit form");
     }
-  }
+  };
 
-  static async editPost(req, res) {
+  editPost = async (req, res) => {
     try {
       const id = Number(req.params.id);
       const { planname, maxconversionsperday, maxfilesize } = req.body;
-      await PlansAccessor.updatePlan(id, {
+      await this.planAccessor.updatePlan(id, {
         planname,
         maxconversionsperday: Number(maxconversionsperday),
         maxfilesize: Number(maxfilesize),
@@ -68,5 +70,5 @@ export class PlansController {
       console.error("Error updating plan:", error);
       res.status(500).send("Error saving changes");
     }
-  }
+  };
 }

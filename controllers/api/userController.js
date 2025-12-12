@@ -1,4 +1,4 @@
-export class UsersApiController {
+export class UserApiController {
   constructor(userService) {
     this.userService = userService;
   }

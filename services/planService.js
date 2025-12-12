@@ -1,23 +1,23 @@
 export class PlanService {
-  constructor(plansAccessor) {
-    this.plansAccessor = plansAccessor;
+  constructor(planAccessor) {
+    this.planAccessor = planAccessor;
   }
 
   getAllPlans() {
-    return this.plansAccessor.getAllPlans();
+    return this.planAccessor.getAllPlans();
   }
 
   getAllPlansWithUsers() {
-    return this.plansAccessor.getAllPlansWithUsers();
+    return this.planAccessor.getAllPlansWithUsers();
   }
 
   getPlanById(planId) {
-    return this.plansAccessor.getPlanById(planId);
+    return this.planAccessor.getPlanById(planId);
   }
 
   createPlan(planData) {
     // Ensure numeric values
-    return this.plansAccessor.createPlan({
+    return this.planAccessor.createPlan({
       ...planData,
       maxconversionsperday: Number(planData.maxconversionsperday),
       maxfilesize: Number(planData.maxfilesize),
@@ -25,7 +25,7 @@ export class PlanService {
   }
 
   updatePlan(planId, planData) {
-    return this.plansAccessor.updatePlan(planId, {
+    return this.planAccessor.updatePlan(planId, {
       ...planData,
       maxconversionsperday: Number(planData.maxconversionsperday),
       maxfilesize: Number(planData.maxfilesize),
@@ -33,6 +33,6 @@ export class PlanService {
   }
 
   deletePlan(planId) {
-    return this.plansAccessor.deletePlan(planId);
+    return this.planAccessor.deletePlan(planId);
   }
 }

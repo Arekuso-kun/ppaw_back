@@ -4,12 +4,15 @@ export class UsageAccessor {
   }
 
   async getAllUsage() {
-    return await this.prisma.usage.findMany();
+    return await this.prisma.usage.findMany({
+      orderBy: { usageid: "asc" },
+    });
   }
 
   async getAllUsageDetailed() {
     return await this.prisma.usage.findMany({
       include: { users: true },
+      orderBy: { usageid: "asc" },
     });
   }
 

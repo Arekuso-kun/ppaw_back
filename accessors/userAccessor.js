@@ -1,4 +1,4 @@
-export class UsersAccessor {
+export class UserAccessor {
   constructor(prisma) {
     this.prisma = prisma;
   }
@@ -6,6 +6,7 @@ export class UsersAccessor {
   async getAllUsers() {
     return await this.prisma.users.findMany({
       where: { deleted: false },
+      orderBy: { userid: "asc" },
     });
   }
 
@@ -13,6 +14,7 @@ export class UsersAccessor {
     return await this.prisma.users.findMany({
       where: { deleted: false },
       include: { plans: true, usage: true },
+      orderBy: { userid: "asc" },
     });
   }
 

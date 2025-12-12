@@ -3,13 +3,13 @@ import path from "path";
 import { fileURLToPath } from "url";
 import cors from "cors";
 
-import plansRoutes from "./routes/plansRoutes.js";
-import usersRoutes from "./routes/usersRoutes.js";
+import planRoutes from "./routes/planRoutes.js";
+import userRoutes from "./routes/userRoutes.js";
 import usageRoutes from "./routes/usageRoutes.js";
 
-import plansApiRoutes from "./routes/api/plansApiRoutes.js";
-import usersApiRoutes from "./routes/api/usersApiRoutes.js";
-import usageApiRoutes from "./routes/api/usageApiRoutes.js";
+import planApiRoutes from "./routes/api/planRoutes.js";
+import userApiRoutes from "./routes/api/userRoutes.js";
+import usageApiRoutes from "./routes/api/usageRoutes.js";
 
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
@@ -30,12 +30,12 @@ app.get("/", (req, res) => {
   res.render("index");
 });
 
-app.use("/plans", plansRoutes);
-app.use("/users", usersRoutes);
+app.use("/plans", planRoutes);
+app.use("/users", userRoutes);
 app.use("/usage", usageRoutes);
 
-app.use("/api/v1/plans", plansApiRoutes);
-app.use("/api/v1/users", usersApiRoutes);
+app.use("/api/v1/plans", planApiRoutes);
+app.use("/api/v1/users", userApiRoutes);
 app.use("/api/v1/usage", usageApiRoutes);
 
 app.listen(3000, () => {

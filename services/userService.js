@@ -1,35 +1,35 @@
 export class UserService {
-  constructor(usersAccessor, usageAccessor) {
-    this.usersAccessor = usersAccessor;
+  constructor(userAccessor, usageAccessor) {
+    this.userAccessor = userAccessor;
     this.usageAccessor = usageAccessor;
   }
 
   getAllUsers() {
-    return this.usersAccessor.getAllUsers();
+    return this.userAccessor.getAllUsers();
   }
 
   getAllUsersDetailed() {
-    return this.usersAccessor.getAllUsersDetailed();
+    return this.userAccessor.getAllUsersDetailed();
   }
 
   getUserById(id) {
-    return this.usersAccessor.getUserById(id);
+    return this.userAccessor.getUserById(id);
   }
 
   getUserByEmail(email) {
-    return this.usersAccessor.getUserByEmail(email);
+    return this.userAccessor.getUserByEmail(email);
   }
 
   createUser(userData) {
-    return this.usersAccessor.createUser(userData);
+    return this.userAccessor.createUser(userData);
   }
 
   updateUser(id, userData) {
-    return this.usersAccessor.updateUser(id, userData);
+    return this.userAccessor.updateUser(id, userData);
   }
 
   deleteUser(id) {
-    return this.usersAccessor.deleteUser(id);
+    return this.userAccessor.deleteUser(id);
   }
 
   async login(email, password) {
@@ -55,17 +55,15 @@ export class UserService {
   }
 
   async getUserConversionInfo(userId) {
-    const user = await this.usersAccessor.getUserById(userId);
+    const user = await this.userAccessor.getUserById(userId);
     if (!user) throw new Error("User not found");
     if (!user.plans) throw new Error("User plan not found");
 
     const dailyUsage = await this.getDailyUsageCount(userId);
-    const remainingConversions = user.plans.maxconversionsperday - dailyUsage;
 
     return {
-      canConvert: remainingConversions > 0,
-      remainingConversions,
       dailyUsage,
+      remainingConversions: user.plans.maxconversionsperday - dailyUsage,
       maxConversions: user.plans.maxconversionsperday,
       maxFileSize: user.plans.maxfilesize,
     };
@@ -73,12 +71,11 @@ export class UserService {
 
   async canConvert(userId, fileSizeBytes) {
     const info = await this.getUserConversionInfo(userId);
-    if (!info) throw new Error("User not found");
 
     const maxFileSizeBytes = info.maxFileSize * 1024 * 1024;
 
     return {
-      canConvert: info.canConvert && fileSizeBytes <= maxFileSizeBytes,
+      canConvert: info.remainingConversions > 0 && fileSizeBytes <= maxFileSizeBytes,
       remainingConversions: info.remainingConversions,
       maxFileSizeBytes,
       fileTooLarge: fileSizeBytes > maxFileSizeBytes,
