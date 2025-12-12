@@ -12,6 +12,7 @@ import userApiRoutes from "./routes/api/userRoutes.js";
 import usageApiRoutes from "./routes/api/usageRoutes.js";
 
 import { errorHandler } from "./middleware/errorHandler.js";
+import { requestLogger } from "./middleware/requestLogger.js";
 
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
@@ -31,6 +32,8 @@ app.use(express.json());
 app.get("/", (req, res) => {
   res.render("index");
 });
+
+app.use(requestLogger);
 
 app.use("/plans", planRoutes);
 app.use("/users", userRoutes);

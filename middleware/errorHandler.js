@@ -1,5 +1,7 @@
+import logger from "../utils/logger.js";
+
 export function errorHandler(err, req, res, next) {
-  console.error(err);
+  logger.error(`${err.message} - ${req.method} ${req.originalUrl} - IP: ${req.ip}\nStack: ${err.stack}`);
 
   if (err.status) {
     return res.status(err.status).json({ error: err.message });
