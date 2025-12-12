@@ -1,12 +1,11 @@
 import express from "express";
-import { PlansApiController } from "../../controllers/api/plansApiController.js";
+import { plansApiController } from "../../di/index.js";
 
 const router = express.Router();
 
-router.get("/", PlansApiController.getAll);
-router.get("/:id", PlansApiController.getById);
-router.post("/", PlansApiController.create);
-router.put("/:id", PlansApiController.update);
-router.delete("/:id", PlansApiController.delete);
-
+router.get("/", plansApiController.getAll);
+router.get("/:id", plansApiController.getById);
+router.post("/", plansApiController.create);
+router.put("/:id", plansApiController.update);
+router.delete("/:id", plansApiController.delete);
 export default router;

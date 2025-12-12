@@ -1,37 +1,51 @@
-import { PrismaClient } from "@prisma/client";
-const prisma = new PrismaClient();
-
 export class UsageAccessor {
-  static async getAllUsage() {
-    return await prisma.usage.findMany();
+  constructor(prisma) {
+    this.prisma = prisma;
   }
 
-  static async getAllUsageDetailed() {
-    return await prisma.usage.findMany({
+  async getAllUsage() {
+    return await this.prisma.usage.findMany();
+  }
+
+  async getAllUsageDetailed() {
+    return await this.prisma.usage.findMany({
       include: { users: true },
     });
   }
 
-  static async getUsageById(usageId) {
-    return await prisma.usage.findUnique({
+  async getUsageById(usageId) {
+    return await this.prisma.usage.findUnique({
       where: { usageid: usageId },
       include: { users: true },
     });
   }
 
-  static async createUsage(usageData) {
-    return await prisma.usage.create({ data: usageData });
+  async countUsage({ userid, dateRange, status }) {
+    return this.prisma.usage.count({
+      where: {
+        userid,
+        status,
+        date: {
+          gte: dateRange.gte,
+          lte: dateRange.lte,
+        },
+      },
+    });
   }
 
-  static async updateUsage(usageId, usageData) {
-    return await prisma.usage.update({
+  async createUsage(usageData) {
+    return await this.prisma.usage.create({ data: usageData });
+  }
+
+  async updateUsage(usageId, usageData) {
+    return await this.prisma.usage.update({
       where: { usageid: usageId },
       data: usageData,
     });
   }
 
-  static async deleteUsage(usageId) {
-    return await prisma.usage.delete({
+  async deleteUsage(usageId) {
+    return await this.prisma.usage.delete({
       where: { usageid: usageId },
     });
   }

@@ -10,7 +10,6 @@ import usageRoutes from "./routes/usageRoutes.js";
 import plansApiRoutes from "./routes/api/plansApiRoutes.js";
 import usersApiRoutes from "./routes/api/usersApiRoutes.js";
 import usageApiRoutes from "./routes/api/usageApiRoutes.js";
-import userConversionsRoutes from "./routes/api/userConversionsRoutes.js";
 
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
@@ -37,7 +36,6 @@ app.use("/usage", usageRoutes);
 
 app.use("/api/v1/plans", plansApiRoutes);
 app.use("/api/v1/users", usersApiRoutes);
-app.use("/api/v1/users", userConversionsRoutes);
 app.use("/api/v1/usage", usageApiRoutes);
 
 app.listen(3000, () => {

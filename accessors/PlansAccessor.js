@@ -1,38 +1,39 @@
-import { PrismaClient } from "@prisma/client";
-const prisma = new PrismaClient();
-
 export class PlansAccessor {
-  static async getAllPlans() {
-    return await prisma.plans.findMany();
+  constructor(prisma) {
+    this.prisma = prisma;
   }
 
-  static async getAllPlansWithUsers() {
-    return await prisma.plans.findMany({
+  async getAllPlans() {
+    return await this.prisma.plans.findMany();
+  }
+
+  async getAllPlansWithUsers() {
+    return await this.prisma.plans.findMany({
       include: { users: true },
     });
   }
 
-  static async getPlanById(planId) {
-    return await prisma.plans.findUnique({
+  async getPlanById(planId) {
+    return await this.prisma.plans.findUnique({
       where: { planid: planId },
     });
   }
 
-  static async createPlan(planData) {
-    return await prisma.plans.create({
+  async createPlan(planData) {
+    return await this.prisma.plans.create({
       data: planData,
     });
   }
 
-  static async updatePlan(planId, planData) {
-    return await prisma.plans.update({
+  async updatePlan(planId, planData) {
+    return await this.prisma.plans.update({
       where: { planid: planId },
       data: planData,
     });
   }
 
-  static async deletePlan(planId) {
-    return await prisma.plans.delete({
+  async deletePlan(planId) {
+    return await this.prisma.plans.delete({
       where: { planid: planId },
     });
   }

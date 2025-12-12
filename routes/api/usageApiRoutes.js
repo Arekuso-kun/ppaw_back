@@ -1,13 +1,12 @@
 import express from "express";
-import { UsageApiController } from "../../controllers/api/usageApiController.js";
+import { usageApiController } from "../../di/index.js";
 
 const router = express.Router();
 
-router.get("/", UsageApiController.getAll);
-router.get("/detailed", UsageApiController.getAllDetailed);
-router.get("/:id", UsageApiController.getById);
-router.post("/", UsageApiController.create);
-router.put("/:id", UsageApiController.update);
-router.delete("/:id", UsageApiController.delete);
-
+router.get("/", usageApiController.getAll);
+router.get("/detailed", usageApiController.getAllDetailed);
+router.get("/:id", usageApiController.getById);
+router.post("/", usageApiController.create);
+router.put("/:id", usageApiController.update);
+router.delete("/:id", usageApiController.delete);
 export default router;
