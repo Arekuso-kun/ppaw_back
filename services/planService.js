@@ -1,4 +1,5 @@
 import { ApiError } from "../utils/ApiError.js";
+import { withCache, invalidateCache } from "../utils/cache.js";
 
 export class PlanService {
   constructor(planAccessor) {
@@ -7,7 +8,7 @@ export class PlanService {
 
   getAllPlans = async () => {
     try {
-      return await this.planAccessor.getAllPlans();
+      return await withCache("plan", "all_plans", () => this.planAccessor.getAllPlans());
     } catch (err) {
       throw new ApiError("Eroare la încărcarea planurilor");
     }
@@ -15,37 +16,42 @@ export class PlanService {
 
   getAllPlansWithUsers = async () => {
     try {
-      return await this.planAccessor.getAllPlansWithUsers();
+      return await withCache("plan", "all_plans_with_users", () => this.planAccessor.getAllPlansWithUsers());
     } catch (err) {
       throw new ApiError("Eroare la încărcarea planurilor cu utilizatori");
     }
   };
 
   getPlanById = async (planId) => {
-    const plan = await this.planAccessor.getPlanById(planId);
+    const plan = await withCache("plan", `plan_${planId}`, () => this.planAccessor.getPlanById(planId));
     if (!plan) throw new ApiError("Planul nu a fost găsit", 404);
     return plan;
   };
 
   createPlan = async (planData) => {
-    return this.planAccessor.createPlan({
+    const plan = await this.planAccessor.createPlan({
       ...planData,
       maxconversionsperday: Number(planData.maxconversionsperday),
       maxfilesize: Number(planData.maxfilesize),
     });
+    invalidateCache("plan");
+    return plan;
   };
 
   updatePlan = async (planId, planData) => {
-    return this.planAccessor.updatePlan(planId, {
+    const plan = await this.planAccessor.updatePlan(planId, {
       ...planData,
       maxconversionsperday: Number(planData.maxconversionsperday),
       maxfilesize: Number(planData.maxfilesize),
     });
+    invalidateCache("plan");
+    return plan;
   };
 
   deletePlan = async (planId) => {
     try {
       await this.planAccessor.deletePlan(planId);
+      invalidateCache("plan");
     } catch {
       throw new ApiError("Nu se poate șterge planul. Poate fi folosit de utilizatori.", 400);
     }

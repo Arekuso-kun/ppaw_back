@@ -1,4 +1,5 @@
 import { ApiError } from "../utils/ApiError.js";
+import { withCache, invalidateCache } from "../utils/cache.js";
 
 export class UserService {
   constructor(userAccessor, usageAccessor) {
@@ -7,33 +8,39 @@ export class UserService {
   }
 
   getAllUsers = async () => {
-    return this.userAccessor.getAllUsers();
+    return withCache("user", "all_users", () => this.userAccessor.getAllUsers());
   };
 
   getAllUsersDetailed = async () => {
-    return this.userAccessor.getAllUsersDetailed();
+    return withCache("user", "all_users_detailed", () => this.userAccessor.getAllUsersDetailed());
   };
 
   getUserById = async (id) => {
-    const user = await this.userAccessor.getUserById(id);
+    const user = await withCache("user", `user_${id}`, () => this.userAccessor.getUserById(id));
     if (!user) throw new ApiError("Utilizatorul nu a fost găsit", 404);
     return user;
   };
 
   getUserByEmail = async (email) => {
-    return this.userAccessor.getUserByEmail(email);
+    return withCache("user", `user_email_${email}`, () => this.userAccessor.getUserByEmail(email));
   };
 
   createUser = async (userData) => {
-    return this.userAccessor.createUser(userData);
+    const user = await this.userAccessor.createUser(userData);
+    invalidateCache("user");
+    return user;
   };
 
   updateUser = async (id, userData) => {
-    return this.userAccessor.updateUser(id, userData);
+    const user = await this.userAccessor.updateUser(id, userData);
+    invalidateCache("user");
+    return user;
   };
 
   deleteUser = async (id) => {
-    return this.userAccessor.deleteUser(id);
+    const result = await this.userAccessor.deleteUser(id);
+    invalidateCache("user");
+    return result;
   };
 
   login = async (email, password) => {
