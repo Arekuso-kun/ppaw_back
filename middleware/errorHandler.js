@@ -4,7 +4,11 @@ export function errorHandler(err, req, res, next) {
   logger.error(`${err.message} - ${req.method} ${req.originalUrl} - IP: ${req.ip}\nStack: ${err.stack}`);
 
   if (err.status) {
-    return res.status(err.status).json({ error: err.message });
+    const response = { error: err.message };
+    if (err.errorCode) {
+      response.errorCode = err.errorCode;
+    }
+    return res.status(err.status).json(response);
   }
 
   if (err.code === "P2002") {

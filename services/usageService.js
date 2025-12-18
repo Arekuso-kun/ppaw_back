@@ -34,10 +34,12 @@ export class UsageService {
 
     if (!check.canConvert) {
       let message = "Ai atins limita zilnică de conversii.";
+      let errorCode = "DAILY_LIMIT_EXCEEDED";
       if (check.fileTooLarge) {
         message = `Fișier prea mare. Limita planului tău este ${check.maxFileSizeBytes / (1024 * 1024)} MB.`;
+        errorCode = "FILE_SIZE_EXCEEDED";
       }
-      throw new ApiError(message, 400);
+      throw new ApiError(message, 400, errorCode);
     }
 
     return this.logConversion(userId, conversionType, "success", fileSize);
