@@ -1,7 +1,10 @@
+import { ImageService } from "../services/imageService.js";
+
 export class UsageController {
   constructor(usageAccessor, userAccessor) {
     this.usageAccessor = usageAccessor;
     this.userAccessor = userAccessor;
+    this.imageService = new ImageService();
   }
 
   index = async (req, res) => {
@@ -17,7 +20,8 @@ export class UsageController {
   createGet = async (req, res) => {
     try {
       const users = await this.userAccessor.getAllUsers();
-      res.render("usage/create", { users });
+      const imageFormats = this.imageService.supportedFormats.map((f) => f.toUpperCase());
+      res.render("usage/create", { users, imageFormats });
     } catch (error) {
       console.error("Error loading create usage form:", error);
       res.status(500).send("Error loading create form");

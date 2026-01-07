@@ -13,14 +13,12 @@
       </select>
     </div>
 
-    <% const imageTypes = ["JPG", "PNG", "GIF", "WEBP", "BMP", "TIFF"]; %>
-
     <div class="row">
       <div class="col-md-6 mb-3">
         <label class="form-label">Convert From</label>
         <select name="conversionFrom" class="form-select" required>
           <option value="" disabled selected>From...</option>
-          <% imageTypes.forEach(type => { %>
+          <% imageFormats.forEach(type => { %>
           <option value="<%= type %>"><%= type %></option>
           <% }) %>
         </select>
@@ -29,7 +27,7 @@
         <label class="form-label">Convert To</label>
         <select name="conversionTo" class="form-select" required>
           <option value="" disabled selected>To...</option>
-          <% imageTypes.forEach(type => { %>
+          <% imageFormats.forEach(type => { %>
           <option value="<%= type %>"><%= type %></option>
           <% }) %>
         </select>

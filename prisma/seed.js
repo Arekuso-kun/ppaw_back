@@ -56,23 +56,37 @@ async function main() {
       {
         userid: user1.userid,
         date: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000), // acum 2 zile
-        conversiontype: "PDF_TO_BMP",
+        conversiontype: "PNG_TO_WEBP",
         status: "success",
         filesize: 19571, // bytes
       },
       {
         userid: user1.userid,
         date: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000), // acum 1 zi
-        conversiontype: "PNG_TO_JPG",
+        conversiontype: "JPEG_TO_PNG",
         status: "failed",
         filesize: 584182,
       },
       {
+        userid: user1.userid,
+        date: new Date(), // acum
+        conversiontype: "GIF_TO_WEBP",
+        status: "success",
+        filesize: 125000,
+      },
+      {
         userid: user2.userid,
         date: new Date(Date.now() - 3 * 60 * 60 * 1000), // acum 3 ore
-        conversiontype: "JPG_TO_PNG",
+        conversiontype: "JPEG_TO_PNG",
         status: "success",
         filesize: 22340,
+      },
+      {
+        userid: user2.userid,
+        date: new Date(Date.now() - 1 * 60 * 60 * 1000), // acum 1 oră
+        conversiontype: "PNG_TO_AVIF",
+        status: "success",
+        filesize: 45000,
       },
     ],
   });

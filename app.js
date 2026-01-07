@@ -10,6 +10,7 @@ import usageRoutes from "./routes/usageRoutes.js";
 import planApiRoutes from "./routes/api/planRoutes.js";
 import userApiRoutes from "./routes/api/userRoutes.js";
 import usageApiRoutes from "./routes/api/usageRoutes.js";
+import imageApiRoutes from "./routes/api/imageRoutes.js";
 
 import { errorHandler } from "./middleware/errorHandler.js";
 import { requestLogger } from "./middleware/requestLogger.js";
@@ -42,6 +43,7 @@ app.use("/usage", usageRoutes);
 app.use("/api/v1/plans", planApiRoutes);
 app.use("/api/v1/users", userApiRoutes);
 app.use("/api/v1/usage", usageApiRoutes);
+app.use("/api/v1/images", imageApiRoutes);
 
 app.use(errorHandler);
 
@@ -55,4 +57,5 @@ app.listen(3000, () => {
   console.log("Plans: http://localhost:3000/api/v1/plans");
   console.log("Users: http://localhost:3000/api/v1/users");
   console.log("Usage: http://localhost:3000/api/v1/usage");
+  console.log("Images: http://localhost:3000/api/v1/images");
 });
