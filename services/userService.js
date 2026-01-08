@@ -74,7 +74,7 @@ export class UserService {
 
     return {
       dailyUsage,
-      remainingConversions: user.plans.maxconversionsperday - dailyUsage,
+      remainingConversions: Math.max(0, user.plans.maxconversionsperday - dailyUsage),
       maxConversions: user.plans.maxconversionsperday,
       maxFileSize: user.plans.maxfilesize,
     };
